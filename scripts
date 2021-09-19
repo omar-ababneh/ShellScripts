@@ -1,0 +1,82 @@
+DirectoryName=$1
+MethodName=$2
+InfoFile=$3
+#-------------------------------------------------------------
+delFun(){
+echo "Hello You in the Del Method"
+cd $DirectoryName/
+directory=$(ls)
+echo "$directory"
+for File in $directory;
+do
+SizeOfFile=$(stat -c %s $File)
+if [ $SizeOfFile -gt $InfoFile ]
+then
+rm -i $File
+fi
+done
+}
+
+#-----------------------------------------------------------
+anaFun(){
+echo "Hello You in the ana Method"
+cd $DirectoryName/
+for file in $InfoFile
+do
+echo "file Name Is $file"
+if [ -e  $file ]
+then
+echo "Content  $file is :"
+echo
+cat $file
+echo
+echo "number of lines in the $file is:"
+wc -l $file
+echo
+echo "number of Words in the $file is:"
+wc -w $file
+echo
+echo "number of characters in the $file is:"
+wc -m $file
+echo
+fi
+done
+}
+#---------------------------------------------------------------
+arrFun(){
+echo "Hello You in the arr Method"
+cd /$DirectoryName/
+files=`ls *.$InfoFile`
+echo "$files"
+j=0
+for i in $files
+do
+if [ $j -eq 0 ] 
+then
+echo -n “Enter Name Folder: ”
+read namef
+mkdir -p $namef
+dir="$namef"
+mv $i $dir
+let j+=1
+else
+mv $i $dir 
+let j+=1 
+fi
+done
+}
+#-----------------------------------------------------------
+case $MethodName in 
+del)
+delFun
+;;
+ana)
+anaFun
+;;
+arr)
+arrFun
+;;
+*)
+echo "Sorry,Method Name Invalid !!";;
+esac
+#----------------------------------------------------------
